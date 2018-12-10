@@ -39,9 +39,9 @@
     -out {{ rocket_chat_letsencrypt_csr }}
   register: csr_gen_result
   when:
-    - (key_gen_result is changed)
+    - "((key_gen_result | default({'changed': False})) is changed)
        or (('stat' in csr_path)
-            and (not (csr_path.stat.exists | bool)))
+            and (not (csr_path.stat.exists | bool)))"
 
 - name: Setup script in cron.daily [Let's Encrypt!]
   copy:

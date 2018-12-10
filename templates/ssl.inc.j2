@@ -15,7 +15,7 @@ ssl_dhparam {{ rocket_chat_nginx_pfs_key_path }};
 ssl_stapling on;
 ssl_stapling_verify on;
 resolver_timeout 5s;
-add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload";
+add_header Strict-Transport-Security "max-age=63072000; includeSubDomains{% if rocket_chat_nginx_pfs_hsts_preload %}; preload{% endif %}";
 add_header X-Frame-Options DENY;
 add_header X-Content-Type-Options nosniff;
 gzip off;

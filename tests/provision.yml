@@ -68,7 +68,7 @@
             - (api_check.status|int != 200)
                or (api_check.msg|string is not search('^OK '))
                or (api_check.json.success|bool != True)
-          when: (api_pre_check | succeeded)
+          when: (api_pre_check is succeeded)
 
         - name: Destroy the last successful vagrant box
           local_action: shell
@@ -77,9 +77,9 @@
           async: 10
           poll: 0
           when:
-            - (api_pre_check | succeeded) and (api_check | succeeded)
+            - (api_pre_check is succeeded) and (api_check is succeeded)
             - ((ansible_virtualization | default(None) | lower) != "docker")
-            - (lookup('pipe','command -v vagrant') | search('vagrant$'))
+            - (lookup('pipe','command -v vagrant') is search('vagrant$'))
 
         # We use YAML anchoring to duplicate this below
         # because Ansible does not supported nested rescue.
@@ -101,7 +101,7 @@
             poll: 0
             when:
               - ((ansible_virtualization | default(None) | lower) != "docker")
-              - (lookup('pipe','command -v vagrant') | search('vagrant$'))
+              - (lookup('pipe','command -v vagrant') is search('vagrant$'))
         tags: check
         # API BLOCK END
 
